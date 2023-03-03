@@ -1,5 +1,6 @@
 import { app, auth, db } from './firebase';
-import { signInWithEmailAndPassword
+import { signInWithEmailAndPassword, signOut, 
+         GoogleAuthProvider, signInWithPopup
 } from "firebase/auth";
 
 
@@ -15,7 +16,18 @@ const handleLogin = (e)=>{
     }
 }
 
+const handleLogout = async (e)=>{
+    await signOut(auth)
+    alert('user has been logged out')
+}
+
 export default function loginPage() {
+
+    const signInWithGoogle = ()=>{
+        const provider = new GoogleAuthProvider()
+        signInWithPopup(auth, provider)
+    }
+
     return (
         <div className="bg-slate-400 h-screen w-full p-11">
             <form id="login" onSubmit={(e)=>handleLogin(e)}>
@@ -27,6 +39,10 @@ export default function loginPage() {
                     <br /><br />
                     <button className="bg-blue-600 text-white p-3 rounded-md">Login</button>
                 </form>
+
+                <button onClick={handleLogout} id="logout" className="bg-black text-white p-3 rounded-md">logout</button>
+
+                <button className='bg-white text-orange-500 p-3' onClick={signInWithGoogle}>Sign in with google</button>
         </div>
     )
 }
